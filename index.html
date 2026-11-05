@@ -57,7 +57,7 @@
             color: #ff5000;
             font-weight: bold;
         }
-
+        
         /* 按钮样式 */
         .btn-taobao {
             display: inline-block;
@@ -82,7 +82,7 @@
         .btn-taobao:active {
             transform: scale(0.98);
         }
-
+        
         /* 弹窗样式 */
         .modal-overlay {
             display: none;
@@ -118,7 +118,7 @@
             margin-bottom: 20px;
             line-height: 1.6;
         }
-
+        
         /* 掏口令显示框 */
         .code-box {
             background: #f0f0f0;
@@ -157,83 +157,80 @@
 </head>
 <body>
 
-<div class="container">
-    <div class="emoji">🏎️💨</div>
-    <h1>救命！我的车队<br>就差你一个了！</h1>
-
-    <div class="content-box">
-        <p>事情是这样的：</p>
-        <p>昨晚我夜观天象，掐指一算，发现今天我的车队有一大波好运正在靠近。</p>
-        <p>但是！系统告诉我：<span class="highlight">“车队缺人，必须要集齐有缘人的一点助力，才能冲向终点！”</span></p>
-        <p>如果你不帮我，我的车队可能就要<span class="highlight">在起跑线上熄火，甚至失去对快乐水的渴望了🥺</span></p>
-        <p>帮我点一下，你就是车队的超级VIP！</p>
-    </div>
-
-    <!-- 点击触发弹窗并复制 -->
-    <button class="btn-taobao" onclick="copyAndShow()">
-        👉 点我一键复制去助力 👈
-    </button>
-</div>
-
-<!-- 弹窗 -->
-<div class="modal-overlay" id="myModal">
-    <div class="modal-content">
-        <div class="modal-title">✅ 复制成功！</div>
-        <div class="modal-text">
-            请直接打开手机淘宝，稍等几秒，系统会自动识别并弹出助力！<br><br>
-            <span style="font-size:12px; color:#999;">如果没自动弹，请手动复制下方口令：</span>
+    <div class="container">
+        <div class="emoji">🏎️💨</div>
+        <h1>救命！我的车队<br>就差你一个了！</h1>
+        
+        <div class="content-box">
+            <p>事情是这样的：</p>
+            <p>昨晚我夜观天象，掐指一算，发现今天我的车队有一大波好运正在靠近。</p>
+            <p>但是！系统告诉我：<span class="highlight">“车队缺人，必须要集齐有缘人的一点助力，才能冲向终点！”</span></p>
+            <p>如果你不帮我，我的车队可能就要<span class="highlight">在起跑线上熄火，甚至失去对快乐水的渴望了🥺</span></p>
+            <p>帮我点一下，你就是车队的超级VIP！</p>
         </div>
 
-        <!-- 你的淘口令 -->
-        <div class="code-box" id="taoCode">08🔐YIRX6bCsZAO🗝 https://m.tb.cn/h.jhibpKx  CZ007 为我的车队助力，一起向前冲</div>
-
-        <!-- 唤起淘宝的链接 (m.tb.cn 的短链) -->
-        <a href="https://m.tb.cn/h.jhibpKx" class="modal-btn" onclick="hideModal()">
-            点此打开淘宝 App 助力
-        </a>
-        <button class="close-btn" onclick="hideModal()">已复制，我去淘宝了</button>
+        <!-- 点击触发弹窗并复制 -->
+        <button class="btn-taobao" onclick="copyAndShow()">
+            👉 点我一键复制去助力 👈
+        </button>
     </div>
-</div>
 
-<script>
-    // 你的口令文字
-    const taoCommand = "08🔐YIRX6bCsZAO🗝 https://m.tb.cn/h.jhibpKx  CZ007 为我的车队助力，一起向前冲";
+    <!-- 弹窗 -->
+    <div class="modal-overlay" id="myModal">
+        <div class="modal-content">
+            <div class="modal-title">✅ 复制成功！</div>
+            <div class="modal-text">
+                请直接打开手机淘宝，稍等几秒，系统会自动识别并弹出助力！<br><br>
+                <span style="font-size:12px; color:#999;">如果没自动弹，请手动复制下方口令：</span>
+            </div>
+            
+            <!-- 你的淘口令 -->
+            <div class="code-box" id="taoCode">08🔐YIRX6bCsZAO🗝 https://m.tb.cn/h.jhibpKx  CZ007 为我的车队助力，一起向前冲</div>
+            
+            <!-- 唤起淘宝的链接 (m.tb.cn 的短链) -->
+            <a href="https://m.tb.cn/h.jhibpKx" class="modal-btn">
+                快去切淘宝快去切淘宝快去切淘宝给我助力！！！
+            </a>
+            <button class="close-btn" onclick="hideModal()">已复制，我去淘宝了</button>
+        </div>
+    </div>
 
-    function copyAndShow() {
-        // 核心黑科技：使用 clipboard API 自动复制
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(taoCommand).then(() => {
-                document.getElementById('myModal').style.display = 'flex';
-            }).catch(() => {
+    <script>
+        // 你的口令文字
+        const taoCommand = "08🔐YIRX6bCsZAO🗝 https://m.tb.cn/h.jhibpKx  CZ007 为我的车队助力，一起向前冲";
+
+        function copyAndShow() {
+            // 核心黑科技：使用 clipboard API 自动复制
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(taoCommand).then(() => {
+                    document.getElementById('myModal').style.display = 'flex';
+                }).catch(() => {
+                    fallbackCopy();
+                });
+            } else {
                 fallbackCopy();
-            });
-        } else {
-            fallbackCopy();
+            }
         }
-    }
 
-    // 兼容老版本浏览器的复制方案
-    function fallbackCopy() {
-        const textArea = document.createElement("textarea");
-        textArea.value = taoCommand;
-        textArea.style.position = "fixed";
-        textArea.style.left = "-999999px";
-        document.body.prepend(textArea);
-        textArea.select();
-        try {
-            document.execCommand('copy');
-            document.getElementById('myModal').style.display = 'flex';
-        } catch (error) {
-            console.error('复制失败', error);
-            alert("请手动长按复制：\n" + taoCommand);
-        } finally {
-            textArea.remove();
+        // 兼容老版本浏览器的复制方案
+        function fallbackCopy() {
+            const textArea = document.createElement("textarea");
+            textArea.value = taoCommand;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            document.body.prepend(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                document.getElementById('myModal').style.display = 'flex';
+            } catch (error) {
+                console.error('复制失败', error);
+                alert("请手动长按复制：\n" + taoCommand);
+            } finally {
+                textArea.remove();
+            }
         }
-    }
 
-    function hideModal() {
-        document.getElementById('myModal').style.display = 'none';
-    }
-</script>
+    </script>
 </body>
 </html>
