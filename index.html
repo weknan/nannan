@@ -128,11 +128,11 @@
             font-size: 14px;
             color: #d32f2f;
             margin-bottom: 15px;
-            user-select: all; /* 允许长按全选 */
+            user-select: all;
             word-break: break-all;
         }
 
-        /* 跳转淘宝按钮 */
+        /* 弹窗内的按钮 */
         .modal-btn {
             display: block;
             width: 100%;
@@ -140,10 +140,11 @@
             background: #ff5000;
             color: #fff;
             border-radius: 25px;
-            text-decoration: none;
+            border: none;
             font-weight: bold;
             font-size: 16px;
             margin-bottom: 10px;
+            cursor: pointer;
         }
         .close-btn {
             font-size: 13px;
@@ -152,6 +153,56 @@
             border: none;
             text-decoration: underline;
             cursor: pointer;
+        }
+
+        /* 提示框 Toast */
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 16px;
+            text-align: center;
+            display: none;
+            z-index: 2000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            width: 80%;
+            max-width: 300px;
+            line-height: 1.5;
+        }
+
+        /* 谢谢比心动画 */
+        .thank-you-box {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 2000;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .heart {
+            font-size: 50px;
+            animation: heartBeat 1s infinite;
+        }
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .thank-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -169,30 +220,43 @@
             <p>帮我点一下，你就是车队的超级VIP！</p>
         </div>
 
-        <!-- 点击触发弹窗并复制 -->
         <button class="btn-taobao" onclick="copyAndShow()">
             👉 点我一键复制去助力 👈
         </button>
     </div>
 
-    <!-- 弹窗 -->
+    <!-- 复制成功弹窗 -->
     <div class="modal-overlay" id="myModal">
         <div class="modal-content">
-            <div class="modal-title">✅ 复制成功！</div>
+            <div class="modal-title">✅ 口令复制成功！</div>
             <div class="modal-text">
                 请直接打开手机淘宝，稍等几秒，系统会自动识别并弹出助力！<br><br>
-                <span style="font-size:12px; color:#999;">如果没自动弹，请手动复制下方口令：</span>
+                <span style="font-size:12px; color:#999;">如果没自动弹，请手动长按复制下方口令：</span>
             </div>
             
-            <!-- 你的淘口令 -->
             <div class="code-box" id="taoCode">08🔐YIRX6bCsZAO🗝 https://m.tb.cn/h.jhibpKx  CZ007 为我的车队助力，一起向前冲</div>
             
-            <!-- 唤起淘宝的链接 (m.tb.cn 的短链) -->
-            <a href="https://m.tb.cn/h.jhibpKx" class="modal-btn">
+            <!-- 替换为普通按钮，点击弹出提示 -->
+            <button class="modal-btn" onclick="showManualTip()">
                 快去切淘宝快去切淘宝快去切淘宝给我助力！！！
-            </a>
-            <button class="close-btn" onclick="hideModal()">已复制，我去淘宝了</button>
+            </button>
         </div>
+    </div>
+
+    <!-- 微信拦截提示 Toast -->
+    <div class="toast" id="manualTip">
+        💡 微信内无法直接跳转<br>
+        <span style="font-size:13px; color:#ddd; margin-top:5px; display:block;">
+            请手动切出微信，打开【手机淘宝】即可
+        </span>
+         <!-- 点击触发谢谢弹窗 -->
+        <button class="close-btn" onclick="showThankYou()">已复制，我去淘宝了</button>
+    </div>
+
+    <!-- 谢谢比心弹窗 -->
+    <div class="thank-you-box" id="thankBox">
+        <div class="heart">💖</div>
+        <div class="thank-text">谢谢你！<br>祝你天天暴富！</div>
     </div>
 
     <script>
@@ -200,7 +264,6 @@
         const taoCommand = "08🔐YIRX6bCsZAO🗝 https://m.tb.cn/h.jhibpKx  CZ007 为我的车队助力，一起向前冲";
 
         function copyAndShow() {
-            // 核心黑科技：使用 clipboard API 自动复制
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(taoCommand).then(() => {
                     document.getElementById('myModal').style.display = 'flex';
@@ -212,7 +275,6 @@
             }
         }
 
-        // 兼容老版本浏览器的复制方案
         function fallbackCopy() {
             const textArea = document.createElement("textarea");
             textArea.value = taoCommand;
@@ -224,13 +286,34 @@
                 document.execCommand('copy');
                 document.getElementById('myModal').style.display = 'flex';
             } catch (error) {
-                console.error('复制失败', error);
                 alert("请手动长按复制：\n" + taoCommand);
             } finally {
                 textArea.remove();
             }
         }
 
+        // 点击去淘宝按钮，显示提示
+        function showManualTip() {
+            const tip = document.getElementById('manualTip');
+            tip.style.display = 'block';
+            setTimeout(() => {
+                tip.style.display = 'none';
+            }, 3000);
+        }
+
+        // 点击已复制，显示谢谢弹窗
+        function showThankYou() {
+            // 先关闭原来的弹窗
+            document.getElementById('myModal').style.display = 'none';
+            // 显示谢谢弹窗
+            const thankBox = document.getElementById('thankBox');
+            thankBox.style.display = 'block';
+            
+            // 3秒后自动关闭谢谢弹窗
+            setTimeout(() => {
+                thankBox.style.display = 'none';
+            }, 3000);
+        }
     </script>
 </body>
 </html>
